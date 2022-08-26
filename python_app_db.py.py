@@ -286,7 +286,7 @@ def show_all():
 
 
 show_all()
-
+#Creating album 
 def my_album():
     album=Toplevel()
     album.title("lava freight")
