@@ -10,11 +10,12 @@ from tkinter import filedialog
 import webbrowser as wb
 from PIL import ImageTk,Image
 import pandas as pd
+import pathlib
 
 
 mainPage=Tk()
 mainPage.title("Lava Freight Data Centar")
-mainPage.iconbitmap('images/truck_b.ico')
+mainPage.iconbitmap('C:/Users/VladimirP1984/Documents/SQLITE/images/truck_b.ico')
 mainPage.state("zoomed")
 
 
@@ -286,6 +287,7 @@ def show_all():
 
 
 show_all()
+<<<<<<< Updated upstream
 #Creating album 
 def my_album():
     album=Toplevel()
@@ -353,30 +355,73 @@ def my_album():
 
 
     
+=======
+>>>>>>> Stashed changes
 
 def add_and_refresh():
     insert_values()
     show_all()
 
-def open_confirmation():
-    selected=my_tree.focus()
-    values = my_tree.item(selected, 'values')
-    wb.open_new(values[6])
+def extension_checker(doc):
 
-def open_delivery():
+
+    def file_selection():
+        selected=my_tree.focus()
+        values = my_tree.item(selected, 'values')
+        x=values[doc].split(',')
+        if len(x)>1:
+            selectedDrop=drop.get()
+            pp=""
+            if selectedDrop=="file1":
+                pp=x[0]
+            if selectedDrop=="file2":
+                pp=x[1]
+            if selectedDrop=="file3":
+                pp=x[2]
+            if selectedDrop=="file4":
+                pp=x[3]
+        else:
+            pp=x[0]
+        t=pathlib.Path(pp).suffix
+        if t=="jpg":
+            open_jpg(pp)
+        else:
+            open_pdf(pp)
+
     selected=my_tree.focus()
     values = my_tree.item(selected, 'values')
-    #print(values[7])
-    x=values[7].split(',')
-    my_image=Image.open(x[2])
+    if not selected:
+            messagebox.showwarning('Warning','Please select the record')
+    else:
+        x=values[doc].split(',')
+        if len(x)>1:
+            filePage=Toplevel()
+            filePage.title("Select file")
+            filePage.iconbitmap('C:/Users/VladimirP1984/Documents/SQLITE/images/truck_b.ico')
+            filePage.geometry("400x100")
+            tt=["Select file..."]
+            for i in range(len(x)):
+                rr="file{}".format(i+1)
+                tt.append(rr)
+            drop=ttk.Combobox(filePage,value=tt)
+            drop.current(0)
+            drop.grid(row=2,column=2,padx=10)
+            open_file_button=Button(filePage,text="Open file",command=file_selection).grid(row=2,column=0,padx=10)
+        else:
+            file_selection()
+
+def open_pdf(p):
+    wb.open_new(p)
+
+def open_jpg(self):
+    my_image=Image.open(self)
     my_image.show()
 
-#def check_file_type()
 
 def search_table():
     searchPage=Tk()
     searchPage.title("Search table")
-    searchPage.iconbitmap('images/truck_b.ico')
+    searchPage.iconbitmap('C:/Users/VladimirP1984/Documents/SQLITE/images/truck_b.ico')
     searchPage.geometry("400x100")
     label3=Label(searchPage,text="Insert search").grid(row=1,column=0,padx=10,sticky=W)
     entryLN=Entry(searchPage)
@@ -474,10 +519,10 @@ search_button.grid(row=1,column=1,padx=10,pady=10)
 show_button=Button(button_frame,text="Show Table",command=show_all,width=20)
 show_button.grid(row=1,column=2,padx=10,pady=10)
 
-show_conf_button=Button(button_frame,text="Show Confirmation",command=open_confirmation,width=20)   
+show_conf_button=Button(button_frame,text="Show Confirmation",command= lambda :extension_checker(6),width=20)   
 show_conf_button.grid(row=0,column=3,padx=10,pady=10)
 
-show_order_button=Button(button_frame,text="Show delivery Order",command=my_album,width=20)    #open_delivery 
+show_order_button=Button(button_frame,text="Show delivery Order",command=lambda :extension_checker(7),width=20)    #my_album 
 show_order_button.grid(row=1,column=3,padx=10,pady=10)
 
 
