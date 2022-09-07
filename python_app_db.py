@@ -33,7 +33,7 @@ my_cursor.execute("""CREATE TABLE IF NOT EXISTS customers(
 
 mainPage=Tk()
 mainPage.title("Lava Freight Data Centar")
-mainPage.iconbitmap('C:/Users/VladimirP1984/Documents/SQLITE/Projects/python/truck_b.ico')
+#mainPage.iconbitmap('C:/Users/VladimirP1984/Documents/SQLITE/Projects/python/truck_b.ico')
 mainPage.state("zoomed")
 
 
@@ -398,7 +398,7 @@ def extension_checker(doc):
         if len(x)>1:
             filePage=Toplevel()
             filePage.title("Select file")
-            filePage.iconbitmap('C:/Users/VladimirP1984/Documents/SQLITE/Projects/python/truck_b.ico')
+            #filePage.iconbitmap('C:/Users/VladimirP1984/Documents/SQLITE/Projects/python/truck_b.ico')
             filePage.geometry("400x100")
             tt=["Select file..."]
             for i in range(len(x)):
@@ -422,7 +422,7 @@ def open_jpg(self):
 def search_table():
     searchPage=Tk()
     searchPage.title("Search table")
-    searchPage.iconbitmap('C:/Users/VladimirP1984/Documents/SQLITE/Projects/python/truck_b.ico')
+    #searchPage.iconbitmap('C:/Users/VladimirP1984/Documents/SQLITE/Projects/python/truck_b.ico')
     searchPage.geometry("400x100")
     label3=Label(searchPage,text="Insert search").grid(row=1,column=0,padx=10,sticky=W)
     entryLN=Entry(searchPage)
