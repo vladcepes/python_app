@@ -11,35 +11,30 @@ import webbrowser as wb
 from PIL import ImageTk,Image
 import pandas as pd
 import pathlib
+import sqlite3
+
+
+mydb = sqlite3.connect('customer.db')
+#Create a cursor
+my_cursor = mydb.cursor()
+#Create a Table
+my_cursor.execute("""CREATE TABLE IF NOT EXISTS customers(
+    tour_id int,
+    driver_name text,
+    driver_last_name text,
+    truck_ID int,
+    tour_price real,
+    mileage real,
+    confirmation real,
+    delivery_order real,
+    inc_num INTEGER PRIMARY KEY AUTOINCREMENT 
+    )""")
 
 
 mainPage=Tk()
 mainPage.title("Lava Freight Data Centar")
-mainPage.iconbitmap('C:/Users/VladimirP1984/Documents/SQLITE/images/truck_b.ico')
+mainPage.iconbitmap('C:/Users/VladimirP1984/Documents/SQLITE/Projects/python/truck_b.ico')
 mainPage.state("zoomed")
-
-
-mydb = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    passwd ="Automation%2025",
-    database = "LavaFreight",
-    )
-#Create cursor and initialize it
-my_cursor=mydb.cursor()
-
-#Create table
-
-my_cursor.execute("CREATE TABLE IF NOT EXISTS customers(tour_id INT(20),\
-    driver_name VARCHAR(255),\
-    driver_last_name VARCHAR(255),\
-    truck_id INT(20),\
-    tour_price DECIMAL(20,2),\
-    mileage INT(20),\
-    confirmation VARCHAR(255),\
-    delivery_order VARCHAR(255),\
-    inc_num INT AUTO_INCREMENT PRIMARY KEY)")
-
 
 
 
@@ -119,9 +114,9 @@ def insert_values():
                 #n=(x[1:-1])
                 #print(n)
             
-            sql_command="INSERT INTO customers (tour_id,driver_name,driver_last_name,truck_id,tour_price,mileage,confirmation,delivery_order) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
-            values=(TOID,name,last_name,TID,TOP,MIL,confirmation,x)
-            my_cursor.execute(sql_command,values)
+            sql_command="INSERT INTO customers (tour_id,driver_name,driver_last_name,truck_id,tour_price,mileage,confirmation,delivery_order) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}')".format(TOID,name,last_name,TID,TOP,MIL,confirmation,x)
+            #values=(TOID,name,last_name,TID,TOP,MIL,confirmation,x)
+            my_cursor.execute(sql_command)
             tourID_entry.delete(0,END)
             dname_entry.delete(0,END)
             dlname_entry.delete(0,END)
@@ -403,7 +398,7 @@ def extension_checker(doc):
         if len(x)>1:
             filePage=Toplevel()
             filePage.title("Select file")
-            filePage.iconbitmap('C:/Users/VladimirP1984/Documents/SQLITE/images/truck_b.ico')
+            filePage.iconbitmap('C:/Users/VladimirP1984/Documents/SQLITE/Projects/python/truck_b.ico')
             filePage.geometry("400x100")
             tt=["Select file..."]
             for i in range(len(x)):
@@ -427,7 +422,7 @@ def open_jpg(self):
 def search_table():
     searchPage=Tk()
     searchPage.title("Search table")
-    searchPage.iconbitmap('C:/Users/VladimirP1984/Documents/SQLITE/images/truck_b.ico')
+    searchPage.iconbitmap('C:/Users/VladimirP1984/Documents/SQLITE/Projects/python/truck_b.ico')
     searchPage.geometry("400x100")
     label3=Label(searchPage,text="Insert search").grid(row=1,column=0,padx=10,sticky=W)
     entryLN=Entry(searchPage)
