@@ -72,13 +72,16 @@ def insert_values():
     if MIL=='':
         MIL=None
     approval=0
+    if TOID=="":
+        TOID="999999999"
+
     for item in items:
         if item[0]==int(TOID):
             messagebox.showwarning('Warning','Tour ID'+' '+ TOID +' '+'already exists in the database')
             approval=1
 
     if approval==0:
-        if TOID!="" and name !="" and last_name!="":
+        if TOID!="999999999" and name !="" and last_name!="":
             responseC=messagebox.askyesno('','Do you want to upload tour confirmation document')
             if responseC==1:
                 confirmation=upload_doc()
@@ -391,25 +394,29 @@ def extension_checker(doc):
 
     selected=my_tree.focus()
     values = my_tree.item(selected, 'values')
-    if not selected:
-            messagebox.showwarning('Warning','Please select the record')
+    if selected and (values[doc]=="No delivery order document" or values[doc]=="No tour confirmation document"):
+        messagebox.showwarning('Warning','No documents uploaded')
     else:
-        x=values[doc].split(',')
-        if len(x)>1:
-            filePage=Toplevel()
-            filePage.title("Select file")
-            #filePage.iconbitmap('C:/Users/VladimirP1984/Documents/SQLITE/Projects/python/truck_b.ico')
-            filePage.geometry("400x100")
-            tt=["Select file..."]
-            for i in range(len(x)):
-                rr="file{}".format(i+1)
-                tt.append(rr)
-            drop=ttk.Combobox(filePage,value=tt)
-            drop.current(0)
-            drop.grid(row=2,column=2,padx=10)
-            open_file_button=Button(filePage,text="Open file",command=file_selection).grid(row=2,column=0,padx=10)
+
+        if not selected:
+                messagebox.showwarning('Warning','Please select the record')
         else:
-            file_selection()
+            x=values[doc].split(',')
+            if len(x)>1:
+                filePage=Toplevel()
+                filePage.title("Select file")
+                #filePage.iconbitmap('C:/Users/VladimirP1984/Documents/SQLITE/Projects/python/truck_b.ico')
+                filePage.geometry("400x100")
+                tt=["Select file..."]
+                for i in range(len(x)):
+                    rr="file{}".format(i+1)
+                    tt.append(rr)
+                drop=ttk.Combobox(filePage,value=tt)
+                drop.current(0)
+                drop.grid(row=2,column=2,padx=10)
+                open_file_button=Button(filePage,text="Open file",command=file_selection).grid(row=2,column=0,padx=10)
+            else:
+                file_selection()
 
 def open_pdf(p):
     wb.open_new(p)
