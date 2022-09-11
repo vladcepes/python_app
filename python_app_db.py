@@ -158,90 +158,133 @@ def delete_record():
 
 def update_values():
 
+
+
     selected=my_tree.focus()
     values = my_tree.item(selected, 'values')
     if not selected:
             messagebox.showwarning('Warning','Please select the record')
+    else:
+        update=Toplevel()
+        update.title("Lava Freight Data Centar")
+        update.geometry("300x300")
+        tourID_labelU=Label(update,text="Tour ID")
+        tourID_labelU.grid(row=0,column=0,padx=10,pady=10)
+        tourID_entryU=Entry(update)
+        tourID_entryU.grid(row=0,column=1,padx=10,pady=10)
 
-    TOID=tourID_entry.get()
-    name=dname_entry.get()
-    last_name=dlname_entry.get()
-    TID=truckID_entry.get()
-    TOP=tourP_entry.get()
-    MIL=mil_entry.get()
+        dname_labelU=Label(update,text="Driver Name")
+        dname_labelU.grid(row=1,column=0,padx=10,pady=10)
+        dname_entryU=Entry(update)
+        dname_entryU.grid(row=1,column=1,padx=10,pady=10)
 
-    if TOID=="":
-        tourID_entry.insert(END,values[0])
-    if name=="":
-        dname_entry.insert(END,values[1])
-    if last_name=="":
-        dlname_entry.insert(END,values[2])
-    if TID=="":
-        truckID_entry.insert(END,values[3])
-    if TOP=="":
-        tourP_entry.insert(END,values[4])
-    if MIL=="":
-        mil_entry.insert(END,values[5])
+        dlname_labelU=Label(update,text="Driver Last Name")
+        dlname_labelU.grid(row=2,column=0,padx=10,pady=10)
+        dlname_entryU=Entry(update)
+        dlname_entryU.grid(row=2,column=1,padx=10,pady=10)
 
-    TOID=tourID_entry.get()
-    name=dname_entry.get()
-    last_name=dlname_entry.get()
-    TID=truckID_entry.get()
-    TOP=tourP_entry.get()
-    MIL=mil_entry.get()
+        truckID_labelU=Label(update,text="Truck ID")
+        truckID_labelU.grid(row=3,column=0,padx=10,pady=10)
+        truckID_entryU=Entry(update)
+        truckID_entryU.grid(row=3,column=1,padx=10,pady=10)
+
+        tourP_labelU=Label(update,text="Tour Price")
+        tourP_labelU.grid(row=4,column=0,padx=10,pady=10)
+        tourP_entryU=Entry(update)
+        tourP_entryU.grid(row=4,column=1,padx=10,pady=10)
+
+        mil_labelU=Label(update,text="Mileage")
+        mil_labelU.grid(row=5,column=0,padx=10,pady=10)
+        mil_entryU=Entry(update)
+        mil_entryU.grid(row=5,column=1,padx=10,pady=10)
+
+
+
+        TOID=tourID_entryU.get()
+        name=dname_entryU.get()
+        last_name=dlname_entryU.get()
+        TID=truckID_entryU.get()
+        TOP=tourP_entryU.get()
+        MIL=mil_entryU.get()
+
+        if TOID=="":
+            tourID_entryU.insert(END,values[0])
+        if name=="":
+            dname_entryU.insert(END,values[1])
+        if last_name=="":
+            dlname_entryU.insert(END,values[2])
+        if TID=="":
+            truckID_entryU.insert(END,values[3])
+        if TOP=="":
+            tourP_entryU.insert(END,values[4])
+        if MIL=="":
+            mil_entryU.insert(END,values[5])
+
+        TOID=tourID_entryU.get()
+        name=dname_entryU.get()
+        last_name=dlname_entryU.get()
+        TID=truckID_entryU.get()
+        TOP=tourP_entryU.get()
+        MIL=mil_entryU.get()
+
+    def update_record():
+
     
-    z="SELECT * FROM customers"
-    my_cursor.execute(z)
-    items=my_cursor.fetchall()
+        z="SELECT * FROM customers"
+        my_cursor.execute(z)
+        items=my_cursor.fetchall()
 
-    approval=0
-    for item in items:
-        if item[0]==int(TOID) and item[0]!=int(values[0]):
-            messagebox.showwarning('Warning','Tour ID'+' '+ TOID +' '+'already exists in the database')
-            approval=1
+        approval=0
+        for item in items:
+            if item[0]==int(TOID) and item[0]!=int(values[0]):
+                messagebox.showwarning('Warning','Tour ID'+' '+ TOID +' '+'already exists in the database')
+                approval=1
 
-    if approval==0:
-        #if TOID!="" and name !="" and last_name!="":
-        responseC=messagebox.askyesno('','Do you want to upload tour confirmation document')
-        if responseC==1:
-            confirmation=upload_doc()
-            if confirmation=="":
-                confirmation=values[6]#'No tour confirmation document'
-        else:
-            confirmation=values[6]
-        responseD=messagebox.askyesno('','Do you want to upload delivery order document')
-        if responseD==1:
-            delivery=[""]
-            for s in range(4):
-                delivery[s]=upload_doc()
-                if delivery[s]!="" and s<3:
-                    responseN=messagebox.askyesno('','Do you want to upload one more delivery order document')
-                    if responseN==1:
-                        delivery.append("")
+        if approval==0:
+            #if TOID!="" and name !="" and last_name!="":
+            responseC=messagebox.askyesno('','Do you want to upload tour confirmation document')
+            if responseC==1:
+                confirmation=upload_doc()
+                if confirmation=="":
+                    confirmation=values[6]#'No tour confirmation document'
+            else:
+                confirmation=values[6]
+            responseD=messagebox.askyesno('','Do you want to upload delivery order document')
+            if responseD==1:
+                delivery=[""]
+                for s in range(4):
+                    delivery[s]=upload_doc()
+                    if delivery[s]!="" and s<3:
+                        responseN=messagebox.askyesno('','Do you want to upload one more delivery order document')
+                        if responseN==1:
+                            delivery.append("")
+                        else:
+                            break
                     else:
                         break
-                else:
-                    break
 
-        
-            if delivery==[""]:
+            
+                if delivery==[""]:
+                    delivery=values[7]
+            else:
                 delivery=values[7]
-        else:
-            delivery=values[7]
-        if delivery==values[7]:
-            x=str(delivery)
-        else:
-            if delivery[len(delivery)-1]=="":
-                delivery.pop()
-            x=",".join(delivery)
+            if delivery==values[7]:
+                x=str(delivery)
+            else:
+                if delivery[len(delivery)-1]=="":
+                    delivery.pop()
+                x=",".join(delivery)
+                
+
+            c="UPDATE customers SET tour_id = {},driver_name='{}',driver_last_name ='{}',truck_id ={},tour_price ={},confirmation ='{}',delivery_order='{}' WHERE inc_num = {}".format(tourID_entryU.get(),dname_entryU.get().replace(" ",""),dlname_entryU.get().replace(" ",""),truckID_entryU.get(),tourP_entryU.get(),confirmation,x,values[8])
+            my_cursor.execute(c)
+            #my.fetchall()
             
 
-        c="UPDATE customers SET tour_id = {},driver_name='{}',driver_last_name ='{}',truck_id ={},tour_price ={},confirmation ='{}',delivery_order='{}' WHERE inc_num = {}".format(tourID_entry.get(),dname_entry.get().replace(" ",""),dlname_entry.get().replace(" ",""),truckID_entry.get(),tourP_entry.get(),confirmation,x,values[8])
-        my_cursor.execute(c)
-        #my.fetchall()
-        
+            mydb.commit()
 
-        mydb.commit()
+            update.destroy()
+            show_all()
 
     tourID_entry.delete(0,END)
     dname_entry.delete(0,END)
@@ -249,6 +292,9 @@ def update_values():
     truckID_entry.delete(0,END)
     tourP_entry.delete(0,END)
     mil_entry.delete(0,END)
+
+    update_buttonU=Button(update,text="OK",width=10,command=update_record)
+    update_buttonU.grid(row=6,column=0,padx=10,pady=10)
    
 
     show_all()
